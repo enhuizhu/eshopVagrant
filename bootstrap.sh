@@ -18,7 +18,11 @@ if ! [ -L /var/www ]; then
 fi
 
 cd /var/www
-#mkdir html
+
+if [ ! -d html ]; then
+  mkdir html
+fi
+
 cd html
 
 git clone https://enhuizhu@bitbucket.org/enhuizhu/eshop.git

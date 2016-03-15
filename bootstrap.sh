@@ -25,6 +25,13 @@ if [ ! -d html ]; then
   mkdir html
 fi
 
-cd html
+#install ssh key
+#copy the ssh key
+sudo cp  /var/www/id_rsa* /root/.ssh/
+#run ssh agent
+sudo ssh-agent /bin/bash
+#sudo eval `ssh-agent -s`
+#add private key to the agent
+sudo ssh-add ~/.ssh/id_rsa
 
-git clone https://enhuizhu@bitbucket.org/enhuizhu/eshop.git eshop
+sudo git clone https://enhuizhu@bitbucket.org/enhuizhu/eshop.git /var/www/html/eshop

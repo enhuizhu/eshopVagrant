@@ -27,4 +27,4 @@ fi
 
 cd html
 
-#git clone https://enhuizhu@bitbucket.org/enhuizhu/eshop.git
+git clone https://enhuizhu@bitbucket.org/enhuizhu/eshop.git eshop

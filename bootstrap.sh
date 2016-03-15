@@ -1,9 +1,11 @@
-#!/usr/bin/env bash
-apt-get update
-apt-get upgrade
-apt-get -f install
+export DEBIAN_FRONTEND="noninteractive"
+
+sudo debconf-set-selections <<< "mysql-server mysql-server/root_password password rootpw"
+sudo debconf-set-selections <<< "mysql-server mysql-server/root_password_again password rootpw"
+
+sudo apt-get install -y mysql-server
+
 apt-get install -y nginx
-apt-get install -y mysql-server
 apt-get install -y php5-mysql
 apt-get install -y php5-fpm
 apt-get install -y curl php5-cli git
@@ -25,4 +27,4 @@ fi
 
 cd html
 
-git clone https://enhuizhu@bitbucket.org/enhuizhu/eshop.git
+#git clone https://enhuizhu@bitbucket.org/enhuizhu/eshop.git

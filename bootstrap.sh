@@ -11,10 +11,13 @@ function installSoftwares {
 	apt-get install -y nginx
 	apt-get install -y php5-mysql
 	apt-get install -y php5-fpm
+	apt-get install -y php5-mcrypt
+	sudo php5enmod mcrypt
+	sudo service php5-fpm restart
 	apt-get install -y curl php5-cli git
 	curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
 	#install node.js
-	sudo apt-get install -y nodejs
+	apt-get install -y nodejs
 }
 
 function createDic {
@@ -37,32 +40,37 @@ function installEshop {
 	if [ ! -d /var/www/html/eshop ]; then
 		#install ssh key
 		#copy the ssh key
-	        cp  /var/www/id_rsa* /root/.ssh/
+	    # sudo su
+	    sudo cp  /var/www/id_rsa* /root/.ssh/
+		chmod 400 /root/.ssh/id_rsa
 		#run ssh agent
-		ssh-agent /bin/bash
+		sudo ssh-agent /bin/bash
 		#add private key to the agent
-		ssh-add /root/.ssh/id_rsa
+		sudo ssh-add /root/.ssh/id_rsa
 		
-                if [ ! -n "$(grep "^bitbucket.org " ~/.ssh/known_hosts)" ]; then 
-		   ssh-keyscan bitbucket.org >> ~/.ssh/known_hosts 2>/dev/null; 
+        if [ ! -n "$(grep "^bitbucket.org " /root/.ssh/known_hosts)" ]; then 
+		   sudo ssh-keyscan bitbucket.org >> /root/.ssh/known_hosts 2>/dev/null; 
 		fi
 
-		git clone ssh://git@bitbucket.org/enhuizhu/eshop.git /var/www/html/eshop
+		sudo git clone ssh://git@bitbucket.org/enhuizhu/eshop.git /var/www/html/eshop
 	fi
 
 	#install all the dependencies
 	cd /var/www/html/eshop
+	sudo dd if=/dev/zero of=/swapfile bs=1024 count=512k
+	mkswap /swapfile
+	swapon /swapfile
 	composer install
 	installDb
 }
 
 function installDb {
-        ROOTPW="rootpw"
-        DBNAME="eshop"
+        #ROOTPW="rootpw"
+        #DBNAME="eshop"
         #install the database
         mysql -uroot -p${ROOTPW} -e "drop database if exists $DBNAME"
         mysql -uroot -p${ROOTPW} -e "create database if not exists $DBNAME"
-        mysql -uroot -p${ROOTPW} -e $DBNAME < /var/www/html/eshop/onlineshop.sql
+        mysql -uroot -p${ROOTPW} $DBNAME < /var/www/html/eshop/onlineshop.sql
 }
 
 installSoftwares 

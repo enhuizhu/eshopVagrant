@@ -14,6 +14,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'"
   config.vm.provision :shell, path: "bootstrap.sh"
   config.vm.network "private_network", type: "dhcp"
+  config.vm.synced_folder ".", "/vagrant", :mount_options => ["dmode=777","fmode=666"]
   #config.vm.network :forwarded_port, guest: 80, host: 4567
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs

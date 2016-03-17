@@ -1,5 +1,5 @@
 export DEBIAN_FRONTEND="noninteractive"
-ROOTPW="roowpw"
+ROOTPW="rootpw"
 DBNAME="eshop"
 
 sudo debconf-set-selections <<< "mysql-server mysql-server/root_password password $ROOTPW"
